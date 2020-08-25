@@ -44,7 +44,7 @@
             this.RedoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.コピーToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.色ToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
@@ -52,6 +52,8 @@
             this.FontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.文字コードCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ヘルプHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cdColor = new System.Windows.Forms.ColorDialog();
+            this.cdFont = new System.Windows.Forms.FontDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,6 +103,7 @@
             this.NewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.NewToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.NewToolStripMenuItem.Text = "新規作成(&N)";
+            this.NewToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // OpenToolStripMenuItem
             // 
@@ -145,7 +148,7 @@
             this.RedoToolStripMenuItem,
             this.toolStripSeparator2,
             this.CutToolStripMenuItem,
-            this.コピーToolStripMenuItem,
+            this.CopyToolStripMenuItem,
             this.PasteToolStripMenuItem,
             this.DelToolStripMenuItem,
             this.色ToolStripMenuItem,
@@ -155,10 +158,10 @@
             this.EditToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.EditToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.EditToolStripMenuItem.Text = "編集(&E)";
+            this.EditToolStripMenuItem.Click += new System.EventHandler(this.EditToolStripMenuItem_Click);
             // 
             // UndoToolStripMenuItem
             // 
-            this.UndoToolStripMenuItem.Enabled = false;
             this.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem";
             this.UndoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.UndoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
@@ -181,35 +184,35 @@
             // 
             // CutToolStripMenuItem
             // 
-            this.CutToolStripMenuItem.Enabled = false;
             this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
             this.CutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CutToolStripMenuItem.Text = "切り取り(&T)";
+            this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
-            // コピーToolStripMenuItem
+            // CopyToolStripMenuItem
             // 
-            this.コピーToolStripMenuItem.Enabled = false;
-            this.コピーToolStripMenuItem.Name = "コピーToolStripMenuItem";
-            this.コピーToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.コピーToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.コピーToolStripMenuItem.Text = "コピー(&C)";
+            this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
+            this.CopyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CopyToolStripMenuItem.Text = "コピー(&C)";
+            this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // PasteToolStripMenuItem
             // 
-            this.PasteToolStripMenuItem.Enabled = false;
             this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
             this.PasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.PasteToolStripMenuItem.Text = "貼り付け(&P)";
+            this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
             // DelToolStripMenuItem
             // 
-            this.DelToolStripMenuItem.Enabled = false;
             this.DelToolStripMenuItem.Name = "DelToolStripMenuItem";
             this.DelToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.DelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.DelToolStripMenuItem.Text = "削除(&D)";
+            this.DelToolStripMenuItem.Click += new System.EventHandler(this.DelToolStripMenuItem_Click);
             // 
             // 色ToolStripMenuItem
             // 
@@ -221,12 +224,14 @@
             this.ColorToolStripMenuItem1.Name = "ColorToolStripMenuItem1";
             this.ColorToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.ColorToolStripMenuItem1.Text = "色...";
+            this.ColorToolStripMenuItem1.Click += new System.EventHandler(this.ColorToolStripMenuItem1_Click);
             // 
             // FontToolStripMenuItem
             // 
             this.FontToolStripMenuItem.Name = "FontToolStripMenuItem";
             this.FontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FontToolStripMenuItem.Text = "フォント...";
+            this.FontToolStripMenuItem.Click += new System.EventHandler(this.FontToolStripMenuItem_Click);
             // 
             // 文字コードCToolStripMenuItem
             // 
@@ -277,12 +282,14 @@
         private System.Windows.Forms.ToolStripMenuItem RedoToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem CutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem コピーToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CopyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator 色ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ColorToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem FontToolStripMenuItem;
+        private System.Windows.Forms.ColorDialog cdColor;
+        private System.Windows.Forms.FontDialog cdFont;
     }
 }
 
