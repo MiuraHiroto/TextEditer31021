@@ -22,25 +22,44 @@ namespace TextEditer31021
         //終了
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //アプリケーション終了
-            Application.Exit();
+                //アプリケーション終了
+                Application.Exit();   
         }
         //新規作成
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fileName = "";
-            rtTextArea.Text = "";
+            //未保存で警告   
+            DialogResult result = MessageBox.Show("テキストは保存されていません。保存しますか？", "テキストを保存しますか？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.Yes)
+            {
+                //ユーザーが保存を選択した場合。
+                SaveToolStripMenuItem_Click(sender, e);
+            }
+            else if (result == DialogResult.No)
+            {
+                fileName = "";
+                rtTextArea.Text = "";
+            }
         }
         //開く
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //[開く]ダイアログを表示
-            if (ofdFileOpen.ShowDialog() == DialogResult.OK)
+           
+            //未保存で警告   
+            DialogResult result = MessageBox.Show("テキストは保存されていません。保存しますか？", "テキストを保存しますか？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.Yes)
             {
-                //StreamReaderクラスを使用してファイル読込み
-                using (StreamReader sr = new StreamReader(ofdFileOpen.FileName, Encoding.GetEncoding("utf-8"), false))
+                //ユーザーが保存を選択した場合。
+                SaveNameToolStripMenuItem_Click(sender, e);
+            }
+            else if (result == DialogResult.No)
+            {
+                //選択しなかった場合。
+                //[開く]ダイアログを表示
+                if (ofdFileOpen.ShowDialog() == DialogResult.OK)
                 {
-                    rtTextArea.Text = sr.ReadToEnd();
+                   
+                    rtTextArea.LoadFile(ofdFileOpen.FileName, RichTextBoxStreamType.RichText);
                 }
             }
         }
@@ -62,19 +81,14 @@ namespace TextEditer31021
             //[名前を付けて保存]ダイアログを表示
             if (sfdFileSave.ShowDialog() == DialogResult.OK)
             {
-                using (StreamWriter sw = new StreamWriter(sfdFileSave.FileName, false, Encoding.GetEncoding("utf-8")))
-                {
-                    sw.WriteLine(rtTextArea.Text);
-                }
+                rtTextArea.SaveFile(sfdFileSave.FileName, RichTextBoxStreamType.RichText);
+               
             }
         }
         //ファイル名を指定しデータを保存
         private void FileSave(string fileName)
         {
-            using (StreamWriter sw = new StreamWriter(sfdFileSave.FileName, true, Encoding.GetEncoding("utf-8")))
-            {
-                sw.WriteLine(rtTextArea.Text);
-            }
+            rtTextArea.SaveFile(fileName, RichTextBoxStreamType.RichText);
         }
  
         //元に戻す
@@ -99,11 +113,9 @@ namespace TextEditer31021
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (rtTextArea.SelectionLength > 0)
-            {
-                
+            {   
                 rtTextArea.Copy();
             }
-      
         }
         //貼り付け
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,26 +133,6 @@ namespace TextEditer31021
             {
                 rtTextArea.Text = "";
             }
-        }
-        //編集
-        private void EditToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*if (rtTextArea.CanUndo)
-            {
-                UndoToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                UndoToolStripMenuItem.Enabled = false;
-            }
-            if (rtTextArea.CanRedo)
-            {
-                RedoToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                RedoToolStripMenuItem.Enabled = false;
-            }*/
         }
         //編集メニュー項目内のマスク処理
         private void EditMenuMaskCheck()
@@ -166,6 +158,26 @@ namespace TextEditer31021
             if (cdFont.ShowDialog() == DialogResult.OK)
             {
                 rtTextArea.SelectionFont = cdFont.Font;
+            }
+        }
+        //ボタンのバッテンの処理
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("テキストは保存されていません。保存しますか？", "テキストを保存しますか？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+            if (result == DialogResult.Yes)
+            {
+                //ユーザーが保存を選択した場合。
+                SaveNameToolStripMenuItem_Click(sender, e);
+            }
+            else if (result == DialogResult.No)
+            {
+               
+            }
+            else
+            {
+                //キャンセルされた場合。
+                e.Cancel = true;
             }
         }
     }
